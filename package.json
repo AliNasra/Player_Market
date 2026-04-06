@@ -1,0 +1,13 @@
+{
+  "name": "player_market",
+  "version": "1.0.0",
+  "description": "A backend implementation that simulates market transfers of coaches and players, using javascript and Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
