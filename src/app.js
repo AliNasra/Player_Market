@@ -1,5 +1,13 @@
+require('dotenv').config();
 const express = require('express');
+const sequelize = require('./config/database');
+require('./models'); // Load associations
 const app = express();
+
+// Sync database
+sequelize.sync().then(() => {
+  console.log('Database synced');
+}).catch(err => console.error('Database sync error:', err));
 
 // Middleware
 app.use(express.json());

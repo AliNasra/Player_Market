@@ -1,11 +1,58 @@
-// Player Model
-class Player {
-  constructor(id, name, position, team) {
-    this.id = id;
-    this.name = name;
-    this.position = position;
-    this.team = team;
-  }
-}
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/database');
+
+const Player = sequelize.define('Player', {
+  player_ID: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  firstName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  lastName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  birthDate: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
+  rating: {
+    type: DataTypes.FLOAT,
+    allowNull: false,
+  },
+  salary: {
+    type: DataTypes.FLOAT,
+    allowNull: false,
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  isActivated: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
+  userName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  team_ID: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  },
+  verificationToken: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+});
 
 module.exports = Player;

@@ -1,45 +1,61 @@
 // Player Controller
-const players = []; // In-memory storage for demo
+const Player = require('../models/Player');
 
-const getAllPlayers = (req, res) => {
-  res.json(players);
-};
-
-const createPlayer = (req, res) => {
-  const player = req.body;
-  players.push(player);
-  res.status(201).json(player);
-};
-
-const getPlayerById = (req, res) => {
-  const id = req.params.id;
-  const player = players.find(p => p.id == id);
-  if (player) {
-    res.json(player);
-  } else {
-    res.status(404).json({ message: 'Player not found' });
+const getAllPlayers = async (req, res) => {
+  try {
+    const players = await Player.findAll();
+    res.json(players);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
 
-const updatePlayer = (req, res) => {
-  const id = req.params.id;
-  const index = players.findIndex(p => p.id == id);
-  if (index !== -1) {
-    players[index] = { ...players[index], ...req.body };
-    res.json(players[index]);
-  } else {
-    res.status(404).json({ message: 'Player not found' });
+const createPlayer = async (req, res) => {
+  try {
+    const player = await Player.create(req.body);
+    res.status(201).json(player);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
 };
 
-const deletePlayer = (req, res) => {
-  const id = req.params.id;
-  const index = players.findIndex(p => p.id == id);
-  if (index !== -1) {
-    players.splice(index, 1);
-    res.status(204).send();
-  } else {
-    res.status(404).json({ message: 'Player not found' });
+const getPlayerById = async (req, res) => {
+  try {
+    const player = await Player.findByPk(req.params.id);
+    if (player) {
+      res.json(player);
+    } else {
+      res.status(404).json({ message: 'Player not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const updatePlayer = async (req, res) => {
+  try {
+    const [updated] = await Player.update(req.body, { where: { player_ID: req.params.id } });
+    if (updated) {
+      const player = await Player.findByPk(req.params.id);
+      res.json(player);
+    } else {
+      res.status(404).json({ message: 'Player not found' });
+    }
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const deletePlayer = async (req, res) => {
+  try {
+    const deleted = await Player.destroy({ where: { player_ID: req.params.id } });
+    if (deleted) {
+      res.status(204).send();
+    } else {
+      res.status(404).json({ message: 'Player not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
 
